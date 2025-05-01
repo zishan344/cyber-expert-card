@@ -2,9 +2,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Team from "./Team";
 import Card from "./Card";
+import Header from "./Header";
+
+interface TeamMember {
+  id: string | number;
+  name: string;
+  img: string;
+  salary: number;
+  age: number;
+  designation: string;
+  address: string;
+}
 
 const Teams = () => {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<TeamMember[]>([]);
+  const [card, setCard] = useState<TeamMember[]>([]);
 
   useEffect(() => {
     axios
@@ -17,19 +29,24 @@ const Teams = () => {
     <div>
       <div>
         <div>
-          <h2>Header</h2>
+          <Header />
         </div>
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-8 gap-4 justify-between flex-wrap">
           <div className="col-span-5">
-            <div className="flex justify-between gap-3 flex-wrap">
+            <div className="flex justify-between gap-2 flex-wrap">
               {teams.map((team) => (
-                <Team key={team?.id} team={team} />
+                <Team
+                  card={card}
+                  setCard={setCard}
+                  key={team?.id}
+                  team={team}
+                />
               ))}
             </div>
           </div>
 
-          <div className="col-span-2">
-            <Card></Card>
+          <div className="col-span-3">
+            <Card setCard={setCard} card={card}></Card>
           </div>
         </div>
       </div>
